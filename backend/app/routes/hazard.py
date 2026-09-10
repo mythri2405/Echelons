@@ -21,17 +21,23 @@ def get_hazard_map():
         .execute()
     )
 
-    scans = scans_response.data
-    detections = detections_response.data
+    scans = scans_response.data or []
+    detections = detections_response.data or []
 
     hazards = []
 
     for scan in scans:
 
+        latitude = scan.get("latitude")
+        longitude = scan.get("longitude")
+
+        if latitude is None or longitude is None:
+            continue
+
         scan_detections = [
             detection
             for detection in detections
-            if detection["scan_id"] == scan["id"]
+            if detection.get("scan_id") == scan.get("id")
         ]
 
         if not scan_detections:
@@ -40,25 +46,30 @@ def get_hazard_map():
         anomaly_count = sum(
             1
             for detection in scan_detections
-            if detection["anomaly"] is True
+            if detection.get("anomaly") is True
         )
+
+        object_count = len(scan_detections)
 
         severity = "low"
 
         if anomaly_count > 0:
             severity = "high"
-        elif len(scan_detections) >= 3:
+        elif object_count >= 3:
             severity = "medium"
 
         hazards.append({
-            "scan_id": scan["id"],
-            "latitude": scan["latitude"],
-            "longitude": scan["longitude"],
-            "object_count": len(scan_detections),
+            "scan_id": scan.get("id"),
+            "latitude": latitude,
+            "longitude": longitude,
+            "object_count": object_count,
             "anomaly_count": anomaly_count,
-            "severity": severity
+            "severity": severity,
+            "status": scan.get("status"),
+            "created_at": scan.get("created_at")
         })
 
     return {
+        "total_hazards": len(hazards),
         "hazards": hazards
     }

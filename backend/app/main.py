@@ -3,6 +3,9 @@ from app.supabase_client import supabase
 from app.routes.hazard import router as hazard_router
 from fastapi import FastAPI
 from app.routes.detection import router as detection_router
+from app.routes import stats
+from app.routes import rag
+
 
 app = FastAPI(
     title="deepEcho",
@@ -30,3 +33,5 @@ def test_supabase():
 app.include_router(detection_router)
 app.include_router(history_router)
 app.include_router(hazard_router)
+app.include_router(stats.router)
+app.include_router(rag.router)

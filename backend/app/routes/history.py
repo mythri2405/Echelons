@@ -44,7 +44,8 @@ def get_scan_details(scan_id: str):
         .execute()
     )
 
-    detections = detection_response.data
+    scan = scan_response.data[0]
+    detections = detection_response.data or []
 
     total_objects = len(detections)
 
@@ -56,8 +57,11 @@ def get_scan_details(scan_id: str):
 
     return {
         "scan_id": scan_id,
-        "image_url": scan_response.data[0]["image_url"],
-        "status": scan_response.data[0]["status"],
+        "image_url": scan.get("image_url"),
+        "status": scan.get("status"),
+        "latitude": scan.get("latitude"),
+        "longitude": scan.get("longitude"),
+        "created_at": scan.get("created_at"),
         "total_objects": total_objects,
         "total_anomalies": total_anomalies,
         "detections": detections
