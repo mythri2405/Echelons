@@ -9,7 +9,9 @@ catalog_vectors.npy
 catalog.faiss
 
 .env
-sources/*.pdf
+# The publications in sources/ ARE committed. Every citation the assistant
+# emits links to one, and a clone without them has attribution without
+# evidence, which is the thing this corpus exists to avoid.
 
 # Frontend build output (frontend/.gitignore also covers these)
 node_modules/
