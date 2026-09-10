@@ -1,0 +1,122 @@
+{
+  "_comment": "Catalog of known object classes for similarity matching. A match here is a HINT, never an identification. Each entry cites the kb/ document that governs it, and those documents are now status: verified against real publications in sources/. The descriptor text itself is a synthesis written for matching, not a quotation, so entries carry status: derived. Numeric dimensions stay null: a fabricated size range would be treated as evidence by an operator. Add an 'embedding' array to every entry to match against your detection model's embedding space instead of the descriptor text.",
+  "objects": [
+    {
+      "id": "moored-contact-mine",
+      "name": "Moored contact mine",
+      "class": "ordnance",
+      "hazard": "high",
+      "descriptor": "compact buoyant spherical or ovoid case suspended in the water column, thin near-vertical mooring line running down to a seabed sinker, moves with the tidal stream, horns or antennae on a smooth manufactured case",
+      "length_m": null,
+      "confirms": "a mooring line to a sinker, and horns or antennae on a smooth symmetrical case",
+      "rules_out": "an object resting on the seabed with no mooring line, or an irregular non-manufactured outline",
+      "source": "naval-mine-identification.md",
+      "status": "derived",
+      "governing_doc_status": "verified"
+    },
+    {
+      "id": "bottom-influence-mine",
+      "name": "Bottom influence mine",
+      "class": "ordnance",
+      "hazard": "high",
+      "descriptor": "regular cylinder resting on the seabed, often partly buried or scoured in, hard acoustic shadow, fires on magnetic acoustic or pressure signature rather than contact",
+      "length_m": null,
+      "confirms": "regular manufactured cylinder with a hard shadow, on or in the seabed, external fittings or lugs",
+      "rules_out": "irregular outline, natural material, or an object suspended in the water column",
+      "source": "naval-mine-identification.md",
+      "status": "derived",
+      "governing_doc_status": "verified"
+    },
+    {
+      "id": "drifting-mine",
+      "name": "Drifting mine",
+      "class": "ordnance",
+      "hazard": "high",
+      "descriptor": "floating or near-surface case not moored to the bottom, usually a parted mooring, position not stable and any reported position ages quickly",
+      "length_m": null,
+      "confirms": "a mine case at or near the surface with a parted mooring cable and no sinker",
+      "rules_out": "a stable position over repeated passes, or contact on the seabed",
+      "source": "naval-mine-identification.md",
+      "status": "derived",
+      "governing_doc_status": "verified"
+    },
+    {
+      "id": "unexploded-ordnance",
+      "name": "Unexploded ordnance, general",
+      "class": "ordnance",
+      "hazard": "high",
+      "descriptor": "manufactured munition on or in the seabed, corroded casing, regular geometry, may be a shell bomb or torpedo body, age does not make it safe and corrosion can expose sensitised filling",
+      "length_m": null,
+      "confirms": "recognisable munition form, driving band, fin assembly, or fuze well",
+      "rules_out": "non-metallic material or an outline with no manufactured symmetry",
+      "source": "uxo-safety.md",
+      "status": "derived",
+      "governing_doc_status": "verified"
+    },
+    {
+      "id": "shipwreck",
+      "name": "Shipwreck",
+      "class": "wreck",
+      "hazard": "site hazard",
+      "descriptor": "large extended structure on the seabed with hull plate machinery and debris scatter, an orientation on the seabed, a least depth above the surrounding bed, often adjacent structural debris",
+      "length_m": null,
+      "confirms": "a match against the wreck registry on position least depth length beam and orientation, not on position alone",
+      "rules_out": "a compact isolated object with no debris field and no extended structure",
+      "source": "wreck-sites.md",
+      "status": "derived",
+      "governing_doc_status": "verified"
+    },
+    {
+      "id": "structural-debris",
+      "name": "Structural debris",
+      "class": "debris",
+      "hazard": "low to moderate",
+      "descriptor": "hull plate machinery and cargo fragments scattered on the seabed, often adjacent to a charted or uncharted wreck, irregular outlines and mixed sizes",
+      "length_m": null,
+      "confirms": "multiple irregular fragments in a scatter pattern near a wreck site",
+      "rules_out": "a single regular manufactured object with symmetry and a hard shadow",
+      "source": "marine-debris.md",
+      "status": "derived",
+      "governing_doc_status": "verified"
+    },
+    {
+      "id": "derelict-fishing-gear",
+      "name": "Derelict fishing gear",
+      "class": "debris",
+      "hazard": "entanglement",
+      "descriptor": "nets longlines pots and cable, diffuse and irregular acoustic return, drapes over seabed features, primary entanglement threat to towed bodies thrusters and divers",
+      "length_m": null,
+      "confirms": "diffuse draping return with no rigid outline, netting or line visible on close inspection",
+      "rules_out": "a rigid symmetrical case with a hard shadow",
+      "source": "marine-debris.md",
+      "status": "derived",
+      "governing_doc_status": "verified"
+    },
+    {
+      "id": "container-or-pressure-vessel",
+      "name": "Drum, cylinder or pressure vessel of unknown contents",
+      "class": "unknown contents",
+      "hazard": "treat as unidentified",
+      "descriptor": "manufactured drum cylinder or pressure vessel of unknown contents on the seabed, regular geometry, chemical and containment hazard, handled as an unidentified object rather than as debris",
+      "length_m": null,
+      "confirms": "drum or cylinder form with closures or valve fittings",
+      "rules_out": "nothing rules this out at range; identification requires an authority",
+      "source": "marine-debris.md",
+      "status": "derived",
+      "governing_doc_status": "verified"
+    },
+    {
+      "id": "geological-feature",
+      "name": "Rock or geological feature",
+      "class": "natural",
+      "hazard": "navigational only",
+      "descriptor": "irregular discontinuous return with no manufactured symmetry, no straight edges, outcrop or boulder consistent with the surrounding seabed geology",
+      "length_m": null,
+      "confirms": "irregular outline consistent with surrounding geology across a second pass on a different heading",
+      "rules_out": "straight edges, symmetry, or regular manufactured geometry",
+      "source": "sonar-interpretation.md",
+      "status": "derived",
+      "governing_doc_status": "verified"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+# Retrieval
+numpy>=1.24
+faiss-cpu>=1.8            # HNSW index; omit and retrieval falls back to exact search
+
+# Generation, default provider
+google-genai>=1.0         # Gemini Flash + Gemini embeddings, free tier
+
+# Alternative provider
+groq>=0.11                # --provider groq, open models, free tier
+
+# Optional: local embeddings, no API and no network.
+# Picked up automatically by `rag.py index` when installed.
+# sentence-transformers>=3.0

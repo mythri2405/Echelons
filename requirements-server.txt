@@ -1,0 +1,6 @@
+# Chat backend only. The CLI in rag.py stays on requirements.txt and does not
+# need any of this.
+fastapi>=0.115
+uvicorn[standard]>=0.30
+pydantic>=2.7
+python-multipart>=0.0.9     # image upload on /detect, wired in a later step

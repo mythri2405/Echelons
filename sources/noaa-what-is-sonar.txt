@@ -1,0 +1,166 @@
+# What is sonar?, NOAA National Ocean Service
+
+source_url: https://oceanservice.noaa.gov/facts/sonar.html
+retrieved: 2026-09-10
+capture: text extracted from the live page
+
+What is sonar?
+An official website of the United States government.
+Here's how you know we're official.
+dot gov icon
+Official websites use .gov
+.gov
+website belongs to an official government organization in the United States.
+https icon
+Secure websites use HTTPS
+A small lock or
+https://
+means you’ve safely connected to a .gov website. Share sensitive information only on official, secure websites.
+National Ocean Service
+National Oceanic and Atmospheric Administration
+Search
+Search National Ocean Service
+Home
+Ocean Facts
+TOPICS
+Explore All Topics
+Careers
+Deep Seabed Mining
+Economy
+Ecosystems
+Geodesy
+Hazards
+Navigation
+Observations
+Ocean
+Recreation
+Sea Level Rise
+Story Maps
+Tools
+Education
+Education
+NOS Education
+About
+Students
+Teacher
+-->
+Education
+NOS Education
+About
+Just for Kids
+Students
+Nautical Charts
+Sea Floor Mapping
+Corals
+Currents
+Estuaries
+Global Positioning
+Pollution
+Tides
+Prince William's Oily Mess
+The Lionfish Invasion
+Games
+Resources
+Projects
+Teachers
+Ocean&Climate Literacy
+Planet Stewards Program
+Sea Level Rise
+The Earth Scientist
+Oysters In the Chesapeake Bay
+Professional Development
+Coral Reefs
+Estuaries
+Living in Weather
+Ocean & Climate
+Tides & Currents
+Climate Resources
+Lesson Plans
+Curriculum
+Education Games
+Discover Your World
+Discover Your Changing World
+-->
+News
+Podcasts
+Video
+Images
+About Us
+Parts of the U.S. Government are closed. This site will not be updated; however NOAA websites and social media channels necessary to protect lives and property will be maintained.
+See
+www.weather.gov
+for critical weather information.
+To learn more, see
+www.commerce.gov
+-->
+Home
+Ocean Facts
+What is sonar?
+What is sonar?
+Sonar uses
+sound waves
+to 'see' in the water.
+-->
+A three-minute video about multibeam and side scan sonar, including a visualization that shows how sonar data is used to make products like nautical charts. |
+Download
+Soundscapes
+(75 MB)
+Sonar, short for
+Sound Navigation and Ranging
+, is helpful for exploring and mapping the ocean because sound waves travel farther in the water than do radar and light waves. NOAA scientists primarily use sonar to develop
+nautical charts
+, locate underwater hazards to navigation, search for and map objects on the seafloor such as shipwrecks, and map the seafloor itself. There are two types of sonar—active and passive.
+Active Sonar
+Active
+sonar
+transducers
+emit an acoustic signal or pulse of sound into the water. If an object is in the path of the sound pulse, the sound bounces off the object and returns an “echo” to the sonar transducer. If the transducer is equipped with the ability to receive signals, it measures the strength of the signal. By determining the time between the emission of the sound pulse and its reception, the transducer can determine the range and orientation of the object.
+Passive Sonar
+Passive
+sonar systems are used primarily to detect noise from marine objects (such as submarines or ships) and marine animals like whales. Unlike active sonar, passive sonar does not emit its own signal, which is an advantage for military vessels that do not want to be found or for scientific missions that concentrate on quietly “listening” to the ocean. Rather, it only detects sound waves coming towards it. Passive sonar cannot measure the range of an object unless it is used in conjunction with other passive listening devices. Multiple passive sonar devices may allow for triangulation of a sound source.
+Search
+Ocean Facts
+Get
+Social
+-->
+More
+Information
+Multibeam Sonar, Side Scan Sonar
+Surveys and Wrecks, Office of Coast Survey
+Understanding Ocean Acoustics
+NOAA Ocean Explorer
+Sound in the Sea Gallery
+NOAA Ocean Explorer
+Acoustic Monitoring
+NOAA Vents Program
+Last updated:
+06/16/24
+Author:
+NOAA
+How to cite this article
+Contact Us
+Provide Feedback
+-->
+Contact Us
+Report an error
+Science. Service.
+Stewardship.
+About NOS
+About Us
+NOS Program Offices
+Media Inquiries
+Website Acknowledgements
+-->
+Resources
+Site Index
+Disclaimer
+Freedom of Information Act
+Accessibility
+More Resources
+Information Quality
+Privacy Policy
+USA.gov
+National Ocean Service
+National Oceanic and Atmospheric Administration
+Department of Commerce
+Social
