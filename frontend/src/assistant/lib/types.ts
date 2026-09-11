@@ -93,6 +93,8 @@ export interface Health {
   detector: 'stub' | 'loaded' | 'disabled'
   detector_models: string[]
   upload_enabled: boolean
+  /** "connected", or the reason storage is unavailable. */
+  storage?: string
 }
 
 export interface DetectResult {
@@ -101,6 +103,10 @@ export interface DetectResult {
   filename: string
   bytes: number
   detections: DetectionRecord[]
+  /** False when Supabase is unconfigured. The detection still ran. */
+  stored?: boolean
+  scan_id?: string
+  image_url?: string | null
 }
 
 /** Frames on the streaming route. */

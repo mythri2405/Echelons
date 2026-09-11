@@ -193,4 +193,7 @@ class HealthResponse(BaseModel):
     model: str
     detector: Literal["stub", "loaded", "disabled"]
     detector_models: list[str] = Field(default_factory=list)
+    # "connected", or the reason it is not. Absent storage costs history, not
+    # the assistant, so this is reported rather than fatal.
+    storage: str = "unconfigured"
     upload_enabled: bool

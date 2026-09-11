@@ -4,3 +4,8 @@ fastapi>=0.115
 uvicorn[standard]>=0.30
 pydantic>=2.7
 python-multipart>=0.0.9     # image upload on /detect, wired in a later step
+
+# Supabase-backed storage, history and stats. Optional: without credentials the
+# app still serves the assistant and the detector, and says so on /health.
+supabase>=2.31
+python-dotenv>=1.0

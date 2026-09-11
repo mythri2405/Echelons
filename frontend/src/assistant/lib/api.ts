@@ -54,7 +54,9 @@ export async function getHealth(signal?: AbortSignal): Promise<Health> {
 
 export async function detectTile(file: File, signal?: AbortSignal): Promise<DetectResult> {
   const form = new FormData()
-  form.append('tile', file)
+  // The field is named `file` because that is what the upload route has always
+  // called it; the assistant was the newcomer here.
+  form.append('file', file)
   const response = await fetch(url(settings.endpoints.detect), {
     method: 'POST',
     body: form,

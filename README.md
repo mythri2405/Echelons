@@ -289,13 +289,17 @@ with a conversation around it: one input box, follow-ups that keep context, and
 citations an operator can open.
 
 ```
-backend/     FastAPI. Wraps rag.py. Never edits it.
+backend/     One FastAPI app over two engines.
+  app/              the Supabase-backed shell: uploads, persistence, history
+    main.py           the application, CORS, health, router wiring
+    routes/           detection, rag, hazard, history, stats
+    services/         persistence, and the bridge to the assistant
+    supabase_client.py  optional: absent credentials cost history, not the app
   config.py         every knob: paths, retrieval, severity, detector classes
   schemas.py        pydantic request and response models
   chat.py           the seam: routing, history, retrieval, citations, grounding
   detect.py         sonar tile in, detection records out
   detector_worker.py the models, in their own process
-  main.py           routes only
 frontend/    One Vite app: the dashboard, with the assistant as a page in it.
   src/pages/Assistant.jsx    the route
   src/assistant/             the chat, self-contained
@@ -322,7 +326,7 @@ Three commands, all local.
 
 ```bash
 .venv/bin/pip install -r requirements-server.txt
-DEEPECHO_ENABLE_UPLOAD=1 .venv/bin/python -m uvicorn backend.main:app --port 8000
+DEEPECHO_ENABLE_UPLOAD=1 .venv/bin/python -m uvicorn backend.app.main:app --port 8000
 
 cd frontend && npm install && npm run dev      # http://localhost:5173
 ```
@@ -358,7 +362,7 @@ cd frontend && npm install && cd ..
 Then two terminals:
 
 ```bash
-DEEPECHO_ENABLE_UPLOAD=1 .venv/bin/python -m uvicorn backend.main:app --port 8000
+DEEPECHO_ENABLE_UPLOAD=1 .venv/bin/python -m uvicorn backend.app.main:app --port 8000
 cd frontend && npm run dev
 ```
 
@@ -386,6 +390,8 @@ citations resolve to real files on a fresh clone.
 | Route | What it does |
 |---|---|
 | `POST /chat` | One turn, answered whole |
+| `POST /rag/query` | The same engine on a simpler contract; `retrieve_only` skips the model |
+| `GET /hazard/map`, `/history`, `/stats` | Stored scans and detections, needs Supabase |
 | `POST /chat/stream` | The same turn, streamed as server-sent events |
 | `POST /detect` | A sonar tile in, detection records out. Behind `DEEPECHO_ENABLE_UPLOAD` |
 | `GET /health` | Index status, corpus size, provider, detector state |
