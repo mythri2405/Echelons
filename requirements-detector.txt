@@ -1,0 +1,8 @@
+# YOLOv8 inference for /detect. Separate from the others because it pulls torch,
+# which is a large install, and because the assistant runs perfectly well
+# without it: no detector simply means no tile upload.
+#
+# It also cannot share a process with faiss on macOS, since both bundle their
+# own libomp. backend/detector_worker.py keeps them apart.
+ultralytics>=8.4
+pillow>=10.0

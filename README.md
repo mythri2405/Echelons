@@ -335,6 +335,52 @@ Set `DEEPECHO_PROVIDER=groq` in `.env` for the demo. Gemini's free tier returns
 503 under load often enough to hit one mid-answer, and Groq answers in about a
 second.
 
+### Setting up on another machine
+
+A fresh clone is missing three things by design: the vector index, the API keys,
+and the detector dependencies. All three are one command each.
+
+```bash
+git clone https://github.com/mythri2405/Echelons.git
+cd Echelons
+git checkout dashboard
+
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt -r requirements-server.txt
+.venv/bin/pip install -r requirements-detector.txt   # only for tile upload
+
+cp .env.example .env        # then put a key in it, see below
+.venv/bin/python rag.py index
+
+cd frontend && npm install && cd ..
+```
+
+Then two terminals:
+
+```bash
+DEEPECHO_ENABLE_UPLOAD=1 .venv/bin/python -m uvicorn backend.main:app --port 8000
+cd frontend && npm run dev
+```
+
+Open `http://localhost:5173` and pick Assistant in the sidebar.
+
+**The index is not in the repo.** `index.faiss`, `index.json` and `vectors.npy`
+are built from `kb/` and are gitignored, because a stale committed index that
+disagrees with the corpus is worse than no index. `rag.py index` rebuilds them
+in about a second and prints what it indexed.
+
+**Keys are not in the repo either.** `.env` is gitignored and always should be.
+A free Groq key from https://console.groq.com/keys is enough, and Groq is the
+one to use: it answers in about a second where Gemini's free tier returns 503
+under load. Put `GROQ_API_KEY=...` and `DEEPECHO_PROVIDER=groq` in `.env`.
+
+**The models and the sources are in the repo.** `models/known.pt` and
+`models/anomaly.pt` are committed, and so are the publications in `sources/`, so
+citations resolve to real files on a fresh clone.
+
+**Without a key**, retrieval still works and can be demonstrated:
+`python3 rag.py search "who do I report a mine to" -k 5` needs no network at all.
+
 ### Endpoints
 
 | Route | What it does |
