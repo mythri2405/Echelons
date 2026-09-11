@@ -1,0 +1,43 @@
+# Render blueprint. Two services: the API in a container, the dashboard as
+# static files. The dashboard needs no container, since `npm run build` produces
+# plain files Render serves for free.
+services:
+  - type: web
+    name: deepecho-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    # `serve` fits a 512 MB instance. Switch to `full` for tile upload and
+    # survey processing, and move to an instance with at least 2 GB.
+    dockerBuildArgs:
+      PROFILE: serve
+    healthCheckPath: /health
+    envVars:
+      # Groq answers in about a second; Gemini's free tier returns 503 under
+      # load. Both are set so the failover has somewhere to go.
+      - key: DEEPECHO_PROVIDER
+        value: groq
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      # Off on the serve profile: there is no torch in the image to run it.
+      - key: DEEPECHO_ENABLE_UPLOAD
+        value: "0"
+      # Supabase is optional. Without these the API still serves the assistant
+      # and the surveys, and /health says why history is unavailable.
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: DEEPECHO_CORS_ORIGINS
+        value: https://deepecho-dashboard.onrender.com
+
+  - type: web
+    name: deepecho-dashboard
+    runtime: static
+    buildCommand: cd frontend && npm ci && npm run build
+    staticPublishPath: ./frontend/dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://deepecho-api.onrender.com

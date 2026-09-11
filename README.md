@@ -392,6 +392,38 @@ Set `DEEPECHO_PROVIDER=groq` in `.env` for the demo. Gemini's free tier returns
 503 under load often enough to hit one mid-answer, and Groq answers in about a
 second.
 
+### Deploying
+
+Two services. The API runs in a container because torch is 583 MB on disk and
+165 MB resident, and a native Python build handles that badly. The dashboard
+does not need one: `npm run build` produces static files.
+
+```bash
+docker build --build-arg PROFILE=serve -t deepecho .
+docker run -p 8000:8000 --env-file .env deepecho
+```
+
+Two build profiles, and the choice is about memory rather than features.
+
+| Profile | Contains | Size | Fits |
+|---|---|---|---|
+| `serve` (default) | assistant, corpus, pre-generated surveys | ~250 MB | a 512 MB instance |
+| `full` | adds YOLOv8 and survey processing | ~1.2 GB | 2 GB and up |
+
+On `serve` there is no torch in the image, so `DEEPECHO_ENABLE_UPLOAD` stays 0
+and `/detect` is not registered at all. A deployment that cannot detect anything
+should not advertise a detection endpoint, even one that answers honestly from
+the stub.
+
+`render.yaml` is a blueprint for both services. Supabase credentials, the model
+provider keys and the dashboard origin are the only values it needs, and every
+one of them is marked `sync: false` so nothing secret lives in the repository.
+Without Supabase the API still serves the assistant and the surveys, and
+`/health` reports why history is unavailable.
+
+The image builds the vector index rather than shipping one. A committed index
+that has drifted from the corpus is worse than no index, and it takes a second.
+
 ### Setting up on another machine
 
 A fresh clone is missing three things by design: the vector index, the API keys,

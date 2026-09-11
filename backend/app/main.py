@@ -124,7 +124,14 @@ def health() -> HealthResponse:
 
 
 app.include_router(rag_router)
-app.include_router(detection_router)
+
+# The upload path is behind one flag, and the flag has to gate the route rather
+# than only the model loading. Without this the serve container, which ships no
+# torch, still advertises /detect and answers it from the stub: a synthetic
+# detection, correctly labelled, from a deployment that cannot detect anything.
+# Off means the route does not exist.
+if config.ENABLE_UPLOAD:
+    app.include_router(detection_router)
 app.include_router(history_router)
 app.include_router(hazard_router)
 app.include_router(stats.router)
