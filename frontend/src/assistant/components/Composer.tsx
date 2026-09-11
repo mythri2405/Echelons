@@ -1,10 +1,6 @@
-'use client'
-
 import { useEffect, useRef } from 'react'
-
 import { copy } from '../config/copy'
 import { theme } from '../config/theme'
-
 interface Props {
   value: string
   onChange: (value: string) => void
@@ -14,11 +10,9 @@ interface Props {
   disabled: boolean
   children?: React.ReactNode
 }
-
 /** One input box. The operator never picks a mode; the backend routes intent. */
 export function Composer({ value, onChange, onSend, onStop, busy, disabled, children }: Props) {
   const field = useRef<HTMLTextAreaElement>(null)
-
   useEffect(() => {
     const node = field.current
     if (!node) return
@@ -26,12 +20,10 @@ export function Composer({ value, onChange, onSend, onStop, busy, disabled, chil
     const max = parseInt(theme.layout.composerMaxHeight, 10)
     node.style.height = `${Math.min(node.scrollHeight, max)}px`
   }, [value])
-
   const submit = () => {
     if (busy || disabled || !value.trim()) return
     onSend()
   }
-
   return (
     <div className="composer">
       <div className="composer-inner">

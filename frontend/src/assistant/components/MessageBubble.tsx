@@ -1,18 +1,13 @@
-'use client'
-
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-
 import { copy } from '../config/copy'
 import { citationTarget, linkCitations } from '../lib/citations'
 import type { Message, Source } from '../lib/types'
 import { StatusBadge } from './StatusBadge'
-
 interface Props {
   message: Message
   onCitation: (n: number, sources: Source[]) => void
 }
-
 /**
  * One message.
  *
@@ -31,19 +26,15 @@ export function MessageBubble({ message, onCitation }: Props) {
       </article>
     )
   }
-
   const meta = message.meta ?? {}
   const sources = meta.sources ?? []
   const ungrounded = meta.grounded === false && !message.streaming
   const showRefusal = meta.refusal === true && meta.grounded !== false
-
   return (
     <article className="message message-assistant">
       <p className="message-role">{copy.roles.assistant}</p>
-
       <div className={`bubble bubble-assistant ${ungrounded ? 'is-ungrounded' : ''}`}>
         {!message.streaming && meta.intent && <StatusBadge meta={meta} />}
-
         {meta.coverage_gap && (
           <Notice
             tone="caution"
@@ -60,7 +51,6 @@ export function MessageBubble({ message, onCitation }: Props) {
         {showRefusal && (
           <Notice tone="caution" title={copy.notice.refusalTitle} body={copy.notice.refusalBody} />
         )}
-
         <div className="prose">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
@@ -91,7 +81,6 @@ export function MessageBubble({ message, onCitation }: Props) {
           </ReactMarkdown>
           {message.streaming && <span className="caret" aria-hidden="true" />}
         </div>
-
         {meta.matches && meta.matches.length > 0 && !message.streaming && (
           <section className="matches">
             <h4 className="matches-title">{copy.matches.title}</h4>
@@ -119,7 +108,6 @@ export function MessageBubble({ message, onCitation }: Props) {
             </ol>
           </section>
         )}
-
         {sources.length > 0 && (
           <footer className="sources-strip">
             <span className="sources-count">{copy.citations.count(sources.length)}</span>
@@ -137,7 +125,6 @@ export function MessageBubble({ message, onCitation }: Props) {
           </footer>
         )}
       </div>
-
       {message.failed && (
         <div className="notice tone-alert">
           <p className="notice-title">{copy.error.title}</p>
@@ -147,7 +134,6 @@ export function MessageBubble({ message, onCitation }: Props) {
     </article>
   )
 }
-
 function Notice({ tone, title, body }: { tone: string; title: string; body: string }) {
   return (
     <div className={`notice tone-${tone}`}>
@@ -156,7 +142,6 @@ function Notice({ tone, title, body }: { tone: string; title: string; body: stri
     </div>
   )
 }
-
 function DetectionSummary({ message }: { message: Message }) {
   const record = message.detection
   if (!record) return null

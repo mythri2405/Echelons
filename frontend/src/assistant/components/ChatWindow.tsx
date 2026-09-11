@@ -1,9 +1,7 @@
-'use client'
-
 import { useCallback, useEffect, useRef, useState } from 'react'
-
 import { copy } from '../config/copy'
 import { settings } from '../config/settings'
+import { theme, themeCss } from '../config/theme'
 import { getHealth, sendChat, streamChat } from '../lib/api'
 import type {
   DetectResult,
@@ -18,10 +16,8 @@ import { Composer } from './Composer'
 import { MessageBubble } from './MessageBubble'
 import { SystemStatus } from './SystemStatus'
 import { UploadControl } from './UploadControl'
-
 let counter = 0
 const nextId = () => `m${++counter}`
-
 /**
  * The conversation.
  *
@@ -41,11 +37,9 @@ export function ChatWindow() {
   const [uploadError, setUploadError] = useState<string | null>(null)
   const [panelSources, setPanelSources] = useState<Source[]>([])
   const [panelSelected, setPanelSelected] = useState<number | null>(null)
-
   const abort = useRef<AbortController | null>(null)
   const lastAttached = useRef<string | null>(null)
   const scroller = useRef<HTMLDivElement>(null)
-
   useEffect(() => {
     let live = true
     const check = async () => {
@@ -67,34 +61,28 @@ export function ChatWindow() {
       clearInterval(timer)
     }
   }, [])
-
   useEffect(() => {
     const node = scroller.current
     if (node) node.scrollTop = node.scrollHeight
   }, [messages])
-
   const patch = useCallback((id: string, change: Partial<Message>) => {
     setMessages((current) =>
       current.map((message) => (message.id === id ? { ...message, ...change } : message)),
     )
   }, [])
-
   const openCitation = useCallback((n: number, sources: Source[]) => {
     if (sources.length === 0) return
     setPanelSources(sources)
     setPanelSelected(sources.some((s) => s.n === n) ? n : sources[0].n)
   }, [])
-
   const stop = useCallback(() => {
     abort.current?.abort()
     abort.current = null
     setBusy(false)
   }, [])
-
   const send = useCallback(async (override?: { text?: string; record?: DetectionRecord }) => {
     const text = (override?.text ?? draft).trim()
     if (!text || busy) return
-
     // An upload sends its own opening turn before React has committed the new
     // detection state, so the record travels with the call rather than being
     // read back from state that is one render behind.
@@ -102,12 +90,10 @@ export function ChatWindow() {
     const snapshot = record ? JSON.stringify(record) : null
     const showRecord = snapshot !== null && snapshot !== lastAttached.current
     lastAttached.current = snapshot
-
     const history: Turn[] = messages
       .filter((message) => !message.failed || message.role === 'user')
       .slice(-settings.chat.maxHistoryTurns)
       .map((message) => ({ role: message.role, content: message.content }))
-
     const userMessage: Message = {
       id: nextId(),
       role: 'user',
@@ -123,11 +109,9 @@ export function ChatWindow() {
     ])
     setDraft('')
     setBusy(true)
-
     const controller = new AbortController()
     abort.current = controller
     const request = { message: text, history, detection_record: record }
-
     try {
       if (settings.features.streaming) {
         await streamChat(
@@ -183,7 +167,6 @@ export function ChatWindow() {
       setBusy(false)
     }
   }, [busy, detection, detectionIsStub, draft, messages, patch])
-
   const onDetections = (result: DetectResult) => {
     setUploadError(null)
     const first = result.detections[0]
@@ -199,13 +182,13 @@ export function ChatWindow() {
     // the detector just found.
     void send({ text: copy.upload.autoBrief, record: first })
   }
-
   const uploadEnabled = Boolean(health?.upload_enabled)
-
   return (
-    <div className="app">
+    <div className="dq-assistant">
+      {/* config/theme.ts stays the single source of every value. Next.js used
+          to inject these in the root layout; here the page carries them. */}
+      <style dangerouslySetInnerHTML={{ __html: themeCss(theme) }} />
       <SystemStatus health={health} error={healthError} />
-
       <div className="thread" ref={scroller}>
         <div className="thread-inner">
           {messages.length === 0 ? (
@@ -215,7 +198,6 @@ export function ChatWindow() {
               <MessageBubble key={message.id} message={message} onCitation={openCitation} />
             ))
           )}
-
           {healthError && messages.length === 0 && (
             <div className="notice tone-alert">
               <p className="notice-title">{copy.error.title}</p>
@@ -224,7 +206,6 @@ export function ChatWindow() {
           )}
         </div>
       </div>
-
       <div className="dock">
         <div className="dock-inner">
           {detection && (
@@ -255,7 +236,6 @@ export function ChatWindow() {
               </button>
             </div>
           )}
-
           {contacts.length > 1 && (
             <div className="attached">
               <span className="attached-label">{copy.upload.contactsLabel}</span>
@@ -278,9 +258,7 @@ export function ChatWindow() {
               ))}
             </div>
           )}
-
           {uploadError && <p className="dock-error">{uploadError}</p>}
-
           <Composer
             value={draft}
             onChange={setDraft}
@@ -297,7 +275,6 @@ export function ChatWindow() {
           </Composer>
         </div>
       </div>
-
       <CitationPanel
         sources={panelSources}
         selected={panelSelected}
@@ -307,7 +284,6 @@ export function ChatWindow() {
     </div>
   )
 }
-
 function EmptyState({ onPick, disabled }: { onPick: (value: string) => void; disabled: boolean }) {
   return (
     <section className="empty">

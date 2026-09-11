@@ -290,16 +290,27 @@ citations an operator can open.
 
 ```
 backend/     FastAPI. Wraps rag.py. Never edits it.
-  config.py    every knob: paths, retrieval settings, severity table, copy
-  schemas.py   pydantic request and response models
-  chat.py      the seam: routing, history, retrieval, citations, grounding
-  detect.py    sonar tile in, detection records out. A stub until best.pt lands
-  main.py      routes only
-frontend/    Next.js. Talks to the backend through lib/api.ts and nothing else.
-  config/theme.ts     every colour, font and spacing value
-  config/copy.ts      every string the operator reads
-  config/settings.ts  API base URL and feature flags
+  config.py         every knob: paths, retrieval, severity, detector classes
+  schemas.py        pydantic request and response models
+  chat.py           the seam: routing, history, retrieval, citations, grounding
+  detect.py         sonar tile in, detection records out
+  detector_worker.py the models, in their own process
+  main.py           routes only
+frontend/    One Vite app: the dashboard, with the assistant as a page in it.
+  src/pages/Assistant.jsx    the route
+  src/assistant/             the chat, self-contained
+    components/              ChatWindow, MessageBubble, CitationPanel, Composer
+    config/theme.ts          every colour, font and spacing value
+    config/copy.ts           every string the operator reads
+    config/settings.ts       API base URL and feature flags
+    lib/api.ts               the only module that talks to the backend
+    assistant.css            scoped under .dq-assistant
+eval/        forty cases and the runner
 ```
+
+The chat stylesheet is scoped under a single root class. The dashboard and the
+chat both defined `.status-dot` and both defined `.app`, and an unscoped merge
+would have quietly restyled the sidebar.
 
 Retrieval, chunking, the system prompt and the corpus are untouched by all of
 it. `rag.py` gained one thing: a `stream()` method beside each provider's
@@ -311,10 +322,14 @@ Three commands, all local.
 
 ```bash
 .venv/bin/pip install -r requirements-server.txt
-.venv/bin/python -m uvicorn backend.main:app --port 8000
+DEEPECHO_ENABLE_UPLOAD=1 .venv/bin/python -m uvicorn backend.main:app --port 8000
 
-cd frontend && npm install && npm run dev      # http://localhost:3000
+cd frontend && npm install && npm run dev      # http://localhost:5173
 ```
+
+The assistant is the last item in the sidebar. Do not run `npm run build` while
+`npm run dev` is running; they share a build directory and the dev server starts
+returning 500.
 
 Set `DEEPECHO_PROVIDER=groq` in `.env` for the demo. Gemini's free tier returns
 503 under load often enough to hit one mid-answer, and Groq answers in about a

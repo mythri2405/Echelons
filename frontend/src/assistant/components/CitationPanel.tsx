@@ -1,18 +1,13 @@
-'use client'
-
 import { useEffect } from 'react'
-
 import { copy } from '../config/copy'
 import { settings } from '../config/settings'
 import type { Source } from '../lib/types'
-
 interface Props {
   sources: Source[]
   selected: number | null
   onSelect: (n: number) => void
   onClose: () => void
 }
-
 /**
  * The proof panel.
  *
@@ -24,7 +19,6 @@ interface Props {
 export function CitationPanel({ sources, selected, onSelect, onClose }: Props) {
   const open = selected !== null && sources.length > 0
   const active = sources.find((s) => s.n === selected) ?? null
-
   useEffect(() => {
     if (!open) return
     const onKey = (event: KeyboardEvent) => {
@@ -33,7 +27,6 @@ export function CitationPanel({ sources, selected, onSelect, onClose }: Props) {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [open, onClose])
-
   return (
     <>
       <div
@@ -48,7 +41,6 @@ export function CitationPanel({ sources, selected, onSelect, onClose }: Props) {
             {copy.citations.close}
           </button>
         </header>
-
         {active && (
           <div className="panel-body">
             <div className="source-card">
@@ -62,7 +54,6 @@ export function CitationPanel({ sources, selected, onSelect, onClose }: Props) {
                 )}
               </div>
             </div>
-
             <dl className="source-meta">
               {active.authority && (
                 <div>
@@ -83,9 +74,7 @@ export function CitationPanel({ sources, selected, onSelect, onClose }: Props) {
                 </div>
               )}
             </dl>
-
             <blockquote className="source-snippet">{active.snippet}</blockquote>
-
             {active.pdf_url ? (
               <a
                 className="button-link"
@@ -98,7 +87,6 @@ export function CitationPanel({ sources, selected, onSelect, onClose }: Props) {
             ) : (
               <p className="source-sub">{copy.citations.noPdf}</p>
             )}
-
             <h4 className="panel-subhead">{copy.citations.listTitle}</h4>
             <ul className="source-list">
               {sources.map((source) => (

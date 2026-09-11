@@ -1,18 +1,13 @@
-'use client'
-
 import { useRef, useState } from 'react'
-
 import { copy } from '../config/copy'
 import { settings } from '../config/settings'
 import { detectTile } from '../lib/api'
 import type { DetectResult } from '../lib/types'
-
 interface Props {
   enabled: boolean
   onResult: (result: DetectResult) => void
   onError: (message: string) => void
 }
-
 /**
  * Tile upload.
  *
@@ -22,9 +17,7 @@ interface Props {
 export function UploadControl({ enabled, onResult, onError }: Props) {
   const input = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
-
   if (!enabled || !settings.features.enableUpload) return null
-
   const choose = async (file: File | undefined) => {
     if (!file) return
     setBusy(true)
@@ -37,7 +30,6 @@ export function UploadControl({ enabled, onResult, onError }: Props) {
       if (input.current) input.current.value = ''
     }
   }
-
   return (
     <>
       <input

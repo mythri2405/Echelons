@@ -91,6 +91,8 @@ export const theme = {
     panelWidth: '420px',
     headerHeight: '52px',
     composerMaxHeight: '190px',
+    /* Dashboard header plus page padding. The chat sizes itself below this. */
+    dashboardChrome: '146px',
   },
 
   motion: {

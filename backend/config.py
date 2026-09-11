@@ -34,10 +34,14 @@ SOURCES_BASE_URL = os.environ.get("DEEPECHO_SOURCES_BASE_URL", SOURCES_MOUNT)
 HOST = os.environ.get("DEEPECHO_HOST", "127.0.0.1")
 PORT = int(os.environ.get("DEEPECHO_PORT", "8000"))
 
-# The Next.js dev server. Local only: nothing here is exposed to the internet.
+# The Vite dev server, on both spellings of localhost, plus the Vite preview
+# port. Local only: nothing here is exposed to the internet.
 CORS_ORIGINS = [
     o.strip() for o in
-    os.environ.get("DEEPECHO_CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",")
+    os.environ.get(
+        "DEEPECHO_CORS_ORIGINS",
+        "http://localhost:5173,http://127.0.0.1:5173,"
+        "http://localhost:4173,http://127.0.0.1:4173").split(",")
     if o.strip()
 ]
 

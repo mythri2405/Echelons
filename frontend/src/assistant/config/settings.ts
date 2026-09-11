@@ -5,10 +5,10 @@
  * these and every component goes through it.
  */
 
-const fromEnv = process.env.NEXT_PUBLIC_API_BASE_URL
+const fromEnv = import.meta.env.VITE_API_BASE_URL
 
 export const settings = {
-  /** Base URL of the FastAPI backend. Override with NEXT_PUBLIC_API_BASE_URL. */
+  /** Base URL of the FastAPI backend. Override with VITE_API_BASE_URL. */
   apiBaseUrl: (fromEnv && fromEnv.trim()) || 'http://127.0.0.1:8000',
 
   endpoints: {
