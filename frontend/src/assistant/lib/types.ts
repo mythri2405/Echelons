@@ -117,6 +117,35 @@ export type StreamFrame =
   | ({ type: 'done' } & ChatResponse)
   | { type: 'error'; detail: string }
 
+/**
+ * A hotspot handed over from the survey hazard map.
+ *
+ * The map owns where and how urgent; the assistant owns what and what to do.
+ * So `severity` and `severity_tier` here are the map's numbers and are
+ * displayed as given. The assistant does not recompute them, because the same
+ * hotspot showing two different urgencies is worse than showing one.
+ */
+export interface SurveyContext {
+  hotspot_id: string
+  dominant_class: string
+  /** max_severity across the cell. Always 0 to 1, so it maps onto the tiers. */
+  severity: number
+  confidence: number
+  centroid: { global_x: number; global_y: number }
+  lat: number | null
+  lon: number | null
+  recommended_action: string
+  severity_tier?: 'critical' | 'medium' | 'low'
+  priority_rank?: number
+  detection_count?: number
+  /** Summed over the grid cell and CAN EXCEED 1. Never render as a severity. */
+  total_severity?: number
+  coordinate_mode?: string
+  survey_id?: string
+  demo?: boolean
+  evidence_tile?: string
+}
+
 /** One rendered message. Assistant messages carry the answer metadata with them. */
 export interface Message {
   id: string
@@ -127,4 +156,6 @@ export interface Message {
   meta?: Partial<ChatResponse> | null
   detection?: DetectionRecord | null
   detectionIsStub?: boolean
+  /** Set when this turn came from the hazard map. Its severity wins. */
+  survey?: SurveyContext | null
 }

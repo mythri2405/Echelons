@@ -28,7 +28,7 @@ const menuItems = [
     icon: ScanSearch,
   },
   {
-    name: "Map",
+    name: "Survey Hazard Map",
     path: "/map",
     icon: Map,
   },

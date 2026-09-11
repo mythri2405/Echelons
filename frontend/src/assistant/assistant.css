@@ -759,3 +759,37 @@
     padding-right: var(--dq-space-md);
   }
 }
+
+
+/* --- Handover from the survey hazard map --------------------------------- */
+
+.dq-assistant .survey-handover {
+  border: 1px solid var(--dq-color-border);
+  border-left: 3px solid var(--dq-color-teal);
+  border-radius: var(--dq-radius-sm);
+  background: var(--dq-color-surface-muted);
+  padding: var(--dq-space-md);
+  margin-bottom: var(--dq-space-md);
+}
+
+.dq-assistant .survey-from {
+  margin: 0 0 var(--dq-space-sm);
+  font-size: var(--dq-font-size-xs);
+  letter-spacing: var(--dq-letter-spacing-label);
+  text-transform: uppercase;
+  color: var(--dq-color-text-faint);
+}
+
+.dq-assistant .survey-note,
+.dq-assistant .survey-demo {
+  margin: var(--dq-space-sm) 0 0;
+  font-size: var(--dq-font-size-sm);
+  color: var(--dq-color-text-muted);
+}
+
+.dq-assistant .survey-demo {
+  color: var(--dq-color-caution-text);
+  text-transform: uppercase;
+  letter-spacing: var(--dq-letter-spacing-label);
+  font-size: var(--dq-font-size-xs);
+}

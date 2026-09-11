@@ -282,6 +282,59 @@ entry cites the `kb/` document that governs it and carries its own `status`, and
 `length_m` is deliberately `null` throughout: a fabricated size range would be
 read as evidence by an operator.
 
+## The survey hazard map
+
+A second subsystem, alongside the assistant and sharing nothing with it but the
+dashboard it appears in. It takes a side-scan survey and a checkpoint and
+produces a ranked picture of where the hazards are and which one to look at
+first.
+
+    THE HAZARD MAP ANSWERS    where things are, and how urgent they are
+    THE RAG ASSISTANT ANSWERS what a thing is, and what is known about it
+
+They stay separate on purpose. A severity score is arithmetic over a detector's
+output and can be recomputed by hand. A grounded answer is retrieval over this
+corpus. Merged, a confident sentence could raise a priority, or a priority could
+imply a fact, and neither system can support that. A hotspot handed to the
+assistant travels as its own context object and carries its own severity, so the
+same contact cannot show one urgency on the map and another beside the answer.
+
+```bash
+pip install -r requirements-survey.txt
+
+# process a survey
+python3 run_survey.py --strips samples/sidescan-s7-submarine.jpg \
+    --model models/known.pt models/anomaly.pt --out data/surveys/s7-submarine
+
+# or see the whole pipeline with no survey and no checkpoint
+python3 demo_survey.py --out data/surveys/demo-synthetic
+```
+
+Then open the dashboard at `/map`. The page reads `export.json` through
+`/survey/{id}/export` and renders it; nothing is recomputed in the browser.
+
+Three things it will not do, stated here because they govern how much its
+numbers mean:
+
+* Positions are pixel offsets inside the sonar strip unless navigation is
+  supplied. They are **not GPS**, every latitude is `null`, and the export says
+  `"coordinate_mode": "Relative Survey Coordinates"`.
+* Severity is a configurable heuristic chosen for this project. It is **not**
+  Navy, Coast Guard, NOAA or IMO procedure and carries no authority.
+* A YOLO detection is a prediction, not a fact. Ten tiles of the real waterfall
+  record in `samples/` produce four detections and all four look like false
+  positives on nadir boundaries.
+
+Full documentation, including the JSON contract, the severity policy, the
+coordinate assumptions and the handoff shape: [docs/SURVEY_HAZARD_MAP.md](docs/SURVEY_HAZARD_MAP.md).
+
+```bash
+python3 unit_tests.py                      # 40 unit tests
+python3 smoke_test.py                      # 187 end-to-end checks
+python3 validate_output.py data/surveys/s7-submarine
+python3 real_model_test.py                 # real checkpoint, or skips with a reason
+```
+
 ## The chat application
 
 The CLI answers one question and exits. The chat application is the same engine

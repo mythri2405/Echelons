@@ -48,3 +48,14 @@ uploads/
 
 # Uploaded scans are user data, not source
 backend/uploads/
+
+# Survey output. The artefacts an operator or the dashboard actually reads are
+# committed, so a fresh clone demos with no processing step: export.json,
+# actions.csv, map.html and the two manifests, about 3 MB across three surveys.
+#
+# Tiles and the simulated strip are not. They are regenerable from the source
+# imagery in samples/, they are 10 MB of the 13, and nothing at runtime opens
+# them: map.html embeds its own imagery as a data URI and the API never reads a
+# tile. They are needed only to REBUILD a map, which run_survey.py does.
+data/surveys/*/tiles/
+data/surveys/*/simulated_survey/

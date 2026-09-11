@@ -1,0 +1,19 @@
+# The survey hazard map. Separate from the others for the same reason they are
+# separate from each other: this subsystem runs without the assistant, without
+# Supabase and without a key, and a machine that only needs to read a
+# pre-generated survey should not be made to install a detector.
+#
+# numpy and pillow are the whole of it for reading a survey. numpy does the
+# tiling arithmetic and the least-squares navigation fit; pillow reads and
+# writes the imagery.
+numpy>=1.24
+pillow>=10.0
+
+# Writes map.html. Needed only to BUILD a map, never to serve or read one: the
+# generated file carries its own Leaflet and needs nothing at all. Skip it and
+# run_survey.py --no-map still produces export.json and actions.csv.
+folium>=0.16
+
+# Inference is in requirements-detector.txt, which this deliberately does not
+# duplicate. build_hazard_map() accepts any callable that returns boxes, so the
+# engine imports, runs and is fully tested without ultralytics or torch.

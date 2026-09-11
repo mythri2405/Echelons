@@ -21,6 +21,7 @@ from .routes.detection import router as detection_router
 from .routes.hazard import router as hazard_router
 from .routes.history import router as history_router
 from .routes.rag import router as rag_router
+from .routes.survey import router as survey_router
 from .supabase_client import supabase_status
 
 log = logging.getLogger("deepecho")
@@ -127,3 +128,13 @@ app.include_router(detection_router)
 app.include_router(history_router)
 app.include_router(hazard_router)
 app.include_router(stats.router)
+
+# The survey hazard map. Reads pre-generated surveys off disk, so it needs no
+# database, no detector and no key, and cannot fail at startup.
+#
+# Note for whoever tidies this up: /hazard/map above answers a similar-sounding
+# question from Supabase scan rows, with severity from a detection count. This
+# router answers it from a processed survey, with severity from class weight
+# times confidence. They are two different models of the same idea and the
+# project should eventually keep one. Nothing here touches the other.
+app.include_router(survey_router)

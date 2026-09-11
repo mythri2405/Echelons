@@ -93,6 +93,21 @@ export const copy = {
       'This record came from the stub detector, not a trained model. It is synthetic and is not evidence.',
   },
 
+  survey: {
+    from: 'From the survey hazard map',
+    hotspot: 'Hotspot',
+    action: 'Recommended action',
+    // The map's severity, shown as the map's. Labelled so nobody reads it as
+    // something the assistant worked out.
+    severityFromMap: 'Survey risk',
+    rank: 'Priority rank',
+    detections: 'Detections in cell',
+    position: 'Centroid',
+    notGeoreferenced: 'Not georeferenced. Positions are pixel offsets in the sonar strip, not GPS.',
+    demo: 'Synthetic survey data',
+    evidence: 'Evidence tile',
+  },
+
   matches: {
     title: 'Nearest known objects',
     caveat:

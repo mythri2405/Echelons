@@ -2,7 +2,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { copy } from '../config/copy'
 import { citationTarget, linkCitations } from '../lib/citations'
-import type { Message, Source } from '../lib/types'
+import type { Message, Source, SurveyContext } from '../lib/types'
 import { StatusBadge } from './StatusBadge'
 interface Props {
   message: Message
@@ -34,7 +34,11 @@ export function MessageBubble({ message, onCitation }: Props) {
     <article className="message message-assistant">
       <p className="message-role">{copy.roles.assistant}</p>
       <div className={`bubble bubble-assistant ${ungrounded ? 'is-ungrounded' : ''}`}>
-        {!message.streaming && meta.intent && <StatusBadge meta={meta} />}
+        {!message.streaming && meta.intent && (
+          <StatusBadge meta={meta} survey={message.survey} />
+        )}
+
+        {message.survey && <SurveyHandover survey={message.survey} />}
         {meta.coverage_gap && (
           <Notice
             tone="caution"
@@ -134,6 +138,43 @@ export function MessageBubble({ message, onCitation }: Props) {
     </article>
   )
 }
+function SurveyHandover({ survey }: { survey: SurveyContext }) {
+  const georeferenced = survey.lat !== null && survey.lon !== null
+  return (
+    <div className="survey-handover">
+      <p className="survey-from">{copy.survey.from}</p>
+      <dl className="detection-fields">
+        <div>
+          <dt>{copy.survey.action}</dt>
+          <dd>{survey.recommended_action}</dd>
+        </div>
+        <div>
+          <dt>{copy.survey.position}</dt>
+          <dd className="mono">
+            {georeferenced
+              ? `${survey.lat}, ${survey.lon}`
+              : `x ${survey.centroid.global_x}, y ${survey.centroid.global_y}`}
+          </dd>
+        </div>
+        {typeof survey.priority_rank === 'number' && (
+          <div>
+            <dt>{copy.survey.rank}</dt>
+            <dd>{survey.priority_rank}</dd>
+          </div>
+        )}
+        {typeof survey.detection_count === 'number' && (
+          <div>
+            <dt>{copy.survey.detections}</dt>
+            <dd>{survey.detection_count}</dd>
+          </div>
+        )}
+      </dl>
+      {!georeferenced && <p className="survey-note">{copy.survey.notGeoreferenced}</p>}
+      {survey.demo && <p className="survey-demo">{copy.survey.demo}</p>}
+    </div>
+  )
+}
+
 function Notice({ tone, title, body }: { tone: string; title: string; body: string }) {
   return (
     <div className={`notice tone-${tone}`}>

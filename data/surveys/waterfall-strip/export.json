@@ -1,0 +1,498 @@
+{
+  "metadata": {
+    "engine": "deepecho-survey-hazard",
+    "processing_version": "1.0.0",
+    "processed_at": "2026-09-11T07:38:53+00:00",
+    "processing_seconds": 8.773,
+    "survey_id": "waterfall-strip",
+    "title": "Waterfall record, false-positive study",
+    "coordinate_mode": "Relative Survey Coordinates",
+    "confidence_threshold": 0.3,
+    "model_name": "known.pt + anomaly.pt",
+    "model_path": "models/known.pt + models/anomaly.pt",
+    "model_count": 2,
+    "detector_classes": [
+      "aircraft",
+      "human",
+      "ship",
+      "fish",
+      "other",
+      "shipwreck"
+    ],
+    "detector": "known.pt + anomaly.pt",
+    "demo": false
+  },
+  "survey_summary": {
+    "total_raw_detections": 5,
+    "total_deduplicated_detections": 3,
+    "duplicates_removed": 2,
+    "total_hotspots": 3,
+    "total_severity": 0.9627,
+    "highest_priority_hotspot": {
+      "hotspot_id": "H001",
+      "strip": "sidescan-waterfall-strip",
+      "total_severity": 0.4248,
+      "risk_score": 0.4248,
+      "dominant_class": "unknown",
+      "detection_count": 1,
+      "recommended_action": "Send for expert identification"
+    },
+    "highest_severity_class": {
+      "object_class": "unknown",
+      "severity": 0.4248,
+      "confidence": 0.531,
+      "detection_id": "sidescan-waterfall-strip_2560_1024_d0"
+    },
+    "class_distribution": {
+      "shipwreck": 2,
+      "unknown": 1
+    },
+    "detections_by_tier": {
+      "critical": 0,
+      "medium": 1,
+      "low": 2
+    },
+    "hotspots_by_tier": {
+      "critical": 0,
+      "medium": 1,
+      "low": 2
+    },
+    "georeferenced": false,
+    "coordinate_mode": "Relative Survey Coordinates",
+    "strips_processed": 1,
+    "strips": [
+      "sidescan-waterfall-strip"
+    ],
+    "tiles_processed": 40,
+    "model_confidence_threshold": 0.3
+  },
+  "detections": [
+    {
+      "id": "sidescan-waterfall-strip_2048_1024_d1",
+      "object_class": "shipwreck",
+      "class_normalized": "shipwreck",
+      "confidence": 0.4862,
+      "class_weight": 0.6,
+      "severity": 0.2917,
+      "severity_tier": "low",
+      "severity_basis": "exact",
+      "recommended_action": "Flag navigation hazard",
+      "action_basis": "exact",
+      "global_x": 2132.22,
+      "global_y": 1342.21,
+      "bbox_global": [
+        2051.99,
+        1024.0,
+        2212.46,
+        1660.42
+      ],
+      "width_px": 160.47,
+      "height_px": 636.42,
+      "latitude": null,
+      "longitude": null,
+      "provenance": {
+        "strip": "sidescan-waterfall-strip",
+        "representative_tile": "sidescan-waterfall-strip_2048_1024.jpg",
+        "source_tiles": [
+          "sidescan-waterfall-strip_2048_1024.jpg"
+        ],
+        "merged_count": 1,
+        "merged_from": [],
+        "merge_spread_px": 0.0,
+        "tile_offset": [
+          2048,
+          1024
+        ],
+        "bbox_tile": [
+          3.99,
+          0.0,
+          164.46,
+          636.42
+        ],
+        "detector_model": "anomaly"
+      }
+    },
+    {
+      "id": "sidescan-waterfall-strip_2560_1024_d0",
+      "object_class": "unknown",
+      "class_normalized": "unknown",
+      "confidence": 0.531,
+      "class_weight": 0.8,
+      "severity": 0.4248,
+      "severity_tier": "medium",
+      "severity_basis": "exact",
+      "recommended_action": "Send for expert identification",
+      "action_basis": "exact",
+      "class_withheld": "aircraft",
+      "class_floor": 0.6,
+      "downgraded_from": "the model called this 'aircraft' at 0.53, below the 0.60 this system requires before reporting that class. Reported as unidentified instead. The original call is retained and nothing was discarded.",
+      "global_x": 2638.12,
+      "global_y": 1483.82,
+      "bbox_global": [
+        2560.0,
+        1411.42,
+        2716.25,
+        1556.21
+      ],
+      "width_px": 156.25,
+      "height_px": 144.79,
+      "latitude": null,
+      "longitude": null,
+      "provenance": {
+        "strip": "sidescan-waterfall-strip",
+        "representative_tile": "sidescan-waterfall-strip_2560_1024.jpg",
+        "source_tiles": [
+          "sidescan-waterfall-strip_2048_1024.jpg",
+          "sidescan-waterfall-strip_2560_1024.jpg"
+        ],
+        "merged_count": 3,
+        "merged_from": [
+          "sidescan-waterfall-strip_2048_1024_d0",
+          "sidescan-waterfall-strip_2560_1024_d1"
+        ],
+        "merge_spread_px": 42.98,
+        "tile_offset": [
+          2560,
+          1024
+        ],
+        "bbox_tile": [
+          0.0,
+          387.42,
+          156.25,
+          532.21
+        ],
+        "detector_model": "known"
+      }
+    },
+    {
+      "id": "sidescan-waterfall-strip_2048_2048_d0",
+      "object_class": "shipwreck",
+      "class_normalized": "shipwreck",
+      "confidence": 0.4103,
+      "class_weight": 0.6,
+      "severity": 0.2462,
+      "severity_tier": "low",
+      "severity_basis": "exact",
+      "recommended_action": "Flag navigation hazard",
+      "action_basis": "exact",
+      "global_x": 2086.86,
+      "global_y": 2360.33,
+      "bbox_global": [
+        2048.84,
+        2050.99,
+        2124.88,
+        2669.67
+      ],
+      "width_px": 76.04,
+      "height_px": 618.68,
+      "latitude": null,
+      "longitude": null,
+      "provenance": {
+        "strip": "sidescan-waterfall-strip",
+        "representative_tile": "sidescan-waterfall-strip_2048_2048.jpg",
+        "source_tiles": [
+          "sidescan-waterfall-strip_2048_2048.jpg"
+        ],
+        "merged_count": 1,
+        "merged_from": [],
+        "merge_spread_px": 0.0,
+        "tile_offset": [
+          2048,
+          2048
+        ],
+        "bbox_tile": [
+          0.84,
+          2.99,
+          76.88,
+          621.67
+        ],
+        "detector_model": "anomaly"
+      }
+    }
+  ],
+  "hotspots": [
+    {
+      "hotspot_id": "H001",
+      "priority_rank": 1,
+      "strip": "sidescan-waterfall-strip",
+      "cell": [
+        5,
+        2
+      ],
+      "cell_size_px": 512,
+      "centroid": {
+        "global_x": 2638.12,
+        "global_y": 1483.82,
+        "latitude": null,
+        "longitude": null
+      },
+      "detection_count": 1,
+      "total_severity": 0.4248,
+      "max_severity": 0.4248,
+      "severity_tier": "medium",
+      "dominant_class": "unknown",
+      "dominant_class_severity": 0.4248,
+      "recommended_action": "Send for expert identification",
+      "action_basis": "exact",
+      "risk_score": 0.4248,
+      "detection_density": 3.815,
+      "hazard_diversity": 1,
+      "confidence_mean": 0.531,
+      "confidence_max": 0.531,
+      "severity_per_detection": 0.4248,
+      "spatial_extent": {
+        "width_px": 0.0,
+        "height_px": 0.0,
+        "diagonal_px": 0.0
+      },
+      "detection_ids": [
+        "sidescan-waterfall-strip_2560_1024_d0"
+      ],
+      "top_detection": {
+        "id": "sidescan-waterfall-strip_2560_1024_d0",
+        "class": "unknown",
+        "confidence": 0.531,
+        "class_weight": 0.8,
+        "severity": 0.4248,
+        "tile": "sidescan-waterfall-strip_2560_1024.jpg"
+      },
+      "rationale": "Ranked 1 on a total severity of 0.4248 across 1 detection. The worst is 'unknown' at confidence 0.531 and class weight 0.8, giving severity 0.4248 and nothing else in the cell. Dominant class 'unknown' is severity-weighted, so it reflects consequence rather than headcount."
+    },
+    {
+      "hotspot_id": "H002",
+      "priority_rank": 2,
+      "strip": "sidescan-waterfall-strip",
+      "cell": [
+        4,
+        2
+      ],
+      "cell_size_px": 512,
+      "centroid": {
+        "global_x": 2132.22,
+        "global_y": 1342.21,
+        "latitude": null,
+        "longitude": null
+      },
+      "detection_count": 1,
+      "total_severity": 0.2917,
+      "max_severity": 0.2917,
+      "severity_tier": "low",
+      "dominant_class": "shipwreck",
+      "dominant_class_severity": 0.2917,
+      "recommended_action": "Flag navigation hazard",
+      "action_basis": "exact",
+      "risk_score": 0.2917,
+      "detection_density": 3.815,
+      "hazard_diversity": 1,
+      "confidence_mean": 0.4862,
+      "confidence_max": 0.4862,
+      "severity_per_detection": 0.2917,
+      "spatial_extent": {
+        "width_px": 0.0,
+        "height_px": 0.0,
+        "diagonal_px": 0.0
+      },
+      "detection_ids": [
+        "sidescan-waterfall-strip_2048_1024_d1"
+      ],
+      "top_detection": {
+        "id": "sidescan-waterfall-strip_2048_1024_d1",
+        "class": "shipwreck",
+        "confidence": 0.4862,
+        "class_weight": 0.6,
+        "severity": 0.2917,
+        "tile": "sidescan-waterfall-strip_2048_1024.jpg"
+      },
+      "rationale": "Ranked 2 on a total severity of 0.2917 across 1 detection. The worst is 'shipwreck' at confidence 0.4862 and class weight 0.6, giving severity 0.2917 and nothing else in the cell. Dominant class 'shipwreck' is severity-weighted, so it reflects consequence rather than headcount."
+    },
+    {
+      "hotspot_id": "H003",
+      "priority_rank": 3,
+      "strip": "sidescan-waterfall-strip",
+      "cell": [
+        4,
+        4
+      ],
+      "cell_size_px": 512,
+      "centroid": {
+        "global_x": 2086.86,
+        "global_y": 2360.33,
+        "latitude": null,
+        "longitude": null
+      },
+      "detection_count": 1,
+      "total_severity": 0.2462,
+      "max_severity": 0.2462,
+      "severity_tier": "low",
+      "dominant_class": "shipwreck",
+      "dominant_class_severity": 0.2462,
+      "recommended_action": "Flag navigation hazard",
+      "action_basis": "exact",
+      "risk_score": 0.2462,
+      "detection_density": 3.815,
+      "hazard_diversity": 1,
+      "confidence_mean": 0.4103,
+      "confidence_max": 0.4103,
+      "severity_per_detection": 0.2462,
+      "spatial_extent": {
+        "width_px": 0.0,
+        "height_px": 0.0,
+        "diagonal_px": 0.0
+      },
+      "detection_ids": [
+        "sidescan-waterfall-strip_2048_2048_d0"
+      ],
+      "top_detection": {
+        "id": "sidescan-waterfall-strip_2048_2048_d0",
+        "class": "shipwreck",
+        "confidence": 0.4103,
+        "class_weight": 0.6,
+        "severity": 0.2462,
+        "tile": "sidescan-waterfall-strip_2048_2048.jpg"
+      },
+      "rationale": "Ranked 3 on a total severity of 0.2462 across 1 detection. The worst is 'shipwreck' at confidence 0.4103 and class weight 0.6, giving severity 0.2462 and nothing else in the cell. Dominant class 'shipwreck' is severity-weighted, so it reflects consequence rather than headcount."
+    }
+  ],
+  "configuration": {
+    "tiling": {
+      "TILE": 640,
+      "STRIDE": 512,
+      "overlap_px": 128,
+      "MIN_CONTENT": 0.02,
+      "DENOISE": false
+    },
+    "detection": {
+      "CONF_THRESH": 0.3,
+      "imgsz": 640
+    },
+    "deduplication": {
+      "MERGE_DIST": 60.0,
+      "cross_model_iou": 0.5,
+      "cross_model_rule": "same tile, different checkpoints, IoU >= cross_model_iou. Merges ACROSS classes, because the checkpoints do not share a vocabulary; the losing call is kept as second_opinion. A separate stage from MERGE_DIST, which never merges classes.",
+      "rule": "same class and same strip, nearest representative within MERGE_DIST survey pixels, highest confidence wins, no chain merging"
+    },
+    "hotspots": {
+      "GRID": 512,
+      "RISK_DENSITY_WEIGHT": 0.25,
+      "TOP_N_HOTSPOTS": 0,
+      "ranked_by": "total_severity descending",
+      "risk_score": "max_severity + RISK_DENSITY_WEIGHT * (total_severity - max_severity)"
+    },
+    "severity_policy": {
+      "version": "1.0.0",
+      "formula": "severity = class_weight * confidence",
+      "class_weights": {
+        "mine": 1.0,
+        "ordnance": 1.0,
+        "uxo": 1.0,
+        "human": 1.0,
+        "victim": 1.0,
+        "unknown": 0.8,
+        "anomaly": 0.8,
+        "aircraft": 0.7,
+        "plane": 0.7,
+        "ship": 0.6,
+        "shipwreck": 0.6,
+        "wreck": 0.6,
+        "chain": 0.5,
+        "cable": 0.5,
+        "net": 0.5,
+        "ghost-gear": 0.5,
+        "tire": 0.3,
+        "drum": 0.3,
+        "fish": 0.2,
+        "marine-life": 0.2,
+        "debris": 0.3,
+        "bottle": 0.3,
+        "can": 0.3
+      },
+      "unknown_class_severity": 0.8,
+      "tiers": {
+        "critical": 0.75,
+        "medium": 0.4,
+        "low": 0.0
+      },
+      "tier_applies_to": "a detection's own severity; a hotspot takes its tier from its max_severity, so a hotspot is never called critical unless it contains a detection that is",
+      "matching": "exact match on the normalised class name, else the longest table key contained in it, else unknown_class_severity",
+      "actions": {
+        "mine": "Deploy EOD team",
+        "ordnance": "Deploy EOD team",
+        "uxo": "Deploy EOD team",
+        "human": "Initiate SAR",
+        "victim": "Initiate SAR",
+        "debris": "Schedule cleanup",
+        "bottle": "Schedule cleanup",
+        "can": "Schedule cleanup",
+        "shipwreck": "Flag navigation hazard",
+        "wreck": "Flag navigation hazard",
+        "ship": "Flag navigation hazard",
+        "aircraft": "Flag navigation hazard",
+        "plane": "Flag navigation hazard",
+        "tyre": "Schedule cleanup",
+        "tire": "Schedule cleanup",
+        "drum": "Schedule cleanup",
+        "unknown": "Send for expert identification",
+        "anomaly": "Send for expert identification",
+        "fish": "Log only, no action",
+        "marine-life": "Log only, no action"
+      },
+      "default_action": "Send for expert identification",
+      "disclaimer": "Severity weights, tier boundaries and recommended actions are a configurable heuristic chosen for this project. They are not Navy, Coast Guard, NOAA or IMO procedure and carry no authority. Review them against your own operating rules before acting on them."
+    },
+    "disclaimer": "Severity weights, tier boundaries and recommended actions are a configurable heuristic chosen for this project. They are not Navy, Coast Guard, NOAA or IMO procedure and carry no authority. Review them against your own operating rules before acting on them."
+  },
+  "provenance": {
+    "demo": false,
+    "processing_version": "1.0.0",
+    "severity_policy_version": "1.0.0",
+    "coordinate_mode": "Relative Survey Coordinates",
+    "coordinate_note": "global_x and global_y are pixel offsets within their own strip and are present for every detection. Latitude and longitude are null wherever navigation does not support one, and are never inferred.",
+    "navigation": {
+      "source": null,
+      "mode": "none",
+      "note": "The manifest records no latitude or longitude. Positions are relative survey pixels."
+    },
+    "source_strips": [
+      {
+        "strip": "sidescan-waterfall-strip",
+        "source_image": "sidescan-waterfall-strip.jpg",
+        "width": 3600,
+        "height": 2758
+      }
+    ],
+    "tile_count": 40,
+    "tiles_in_manifest": 40,
+    "tiles_processed": 40,
+    "tiles_failed": [],
+    "manifest": "manifest.csv",
+    "tiling": {
+      "tile": 640,
+      "stride": 512,
+      "overlap": 128,
+      "min_content": 0.02,
+      "denoise": false,
+      "content_score": "standard deviation of the tile's grey levels / 255, measured on the tile as written"
+    },
+    "model": {
+      "model_name": "known.pt + anomaly.pt",
+      "model_path": "models/known.pt + models/anomaly.pt",
+      "model_count": 2
+    },
+    "confidence_threshold": 0.3,
+    "severity_formula": "severity = class_weight * confidence",
+    "class_confidence_floors": {
+      "human": 0.75,
+      "victim": 0.75,
+      "aircraft": 0.6,
+      "plane": 0.6,
+      "fish": 0.6,
+      "ship": 0.25,
+      "shipwreck": 0.25,
+      "wreck": 0.25
+    },
+    "class_floor_rule": "a detection below its class's floor is relabelled 'unknown' and never dropped; the original call is kept in the detection's downgraded_from. This changes the claim, not the direction of the score: it lowers severity only for classes weighted above UNKNOWN_CLASS_SEVERITY.",
+    "class_floors_withheld": 3,
+    "ranking_rule": "hotspots sorted by total_severity descending; H001 is the highest priority",
+    "audit_note": "Every hotspot carries a `rationale` naming the detection that set its severity, and every detection carries the tiles it was seen in and how many views were merged into it."
+  }
+}

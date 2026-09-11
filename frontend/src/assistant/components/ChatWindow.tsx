@@ -9,6 +9,7 @@ import type {
   Health,
   Message,
   Source,
+  SurveyContext,
   Turn,
 } from '../lib/types'
 import { CitationPanel } from './CitationPanel'
@@ -25,7 +26,14 @@ const nextId = () => `m${++counter}`
  * state. History is client-side: every request carries the turns it needs, so
  * the backend stores nothing and there is no session to lose.
  */
-export function ChatWindow() {
+interface Props {
+  /** A hotspot handed over from the survey hazard map, or null. */
+  surveyContext?: SurveyContext | null
+  /** The opening question to ask about it, sent automatically on arrival. */
+  initialQuestion?: string | null
+}
+
+export function ChatWindow({ surveyContext = null, initialQuestion = null }: Props = {}) {
   const [health, setHealth] = useState<Health | null>(null)
   const [healthError, setHealthError] = useState<string | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
@@ -38,6 +46,7 @@ export function ChatWindow() {
   const [panelSources, setPanelSources] = useState<Source[]>([])
   const [panelSelected, setPanelSelected] = useState<number | null>(null)
   const abort = useRef<AbortController | null>(null)
+  const handedOver = useRef<string | null>(null)
   const lastAttached = useRef<string | null>(null)
   const scroller = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -65,6 +74,26 @@ export function ChatWindow() {
     const node = scroller.current
     if (node) node.scrollTop = node.scrollHeight
   }, [messages])
+
+  useEffect(() => {
+    if (!surveyContext || !initialQuestion) return
+    if (handedOver.current === surveyContext.hotspot_id) return
+    handedOver.current = surveyContext.hotspot_id
+
+    // A minimal record, so routing and the corpus synonyms work: without a class
+    // the retrieval for "ship" misses the wreck document entirely. Severity is
+    // NOT taken from it. The map's number travels on the survey context and is
+    // what gets displayed, which is why the two can never disagree here.
+    const record: DetectionRecord = {
+      object_class: surveyContext.dominant_class,
+      confidence: surveyContext.confidence,
+    }
+    setDetection(record)
+    setDetectionIsStub(false)
+    lastAttached.current = null
+    void send({ text: initialQuestion, record, survey: surveyContext })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [surveyContext, initialQuestion])
   const patch = useCallback((id: string, change: Partial<Message>) => {
     setMessages((current) =>
       current.map((message) => (message.id === id ? { ...message, ...change } : message)),
@@ -80,7 +109,11 @@ export function ChatWindow() {
     abort.current = null
     setBusy(false)
   }, [])
-  const send = useCallback(async (override?: { text?: string; record?: DetectionRecord }) => {
+  const send = useCallback(async (override?: {
+    text?: string
+    record?: DetectionRecord
+    survey?: SurveyContext | null
+  }) => {
     const text = (override?.text ?? draft).trim()
     if (!text || busy) return
     // An upload sends its own opening turn before React has committed the new
@@ -102,10 +135,11 @@ export function ChatWindow() {
       detectionIsStub: showRecord ? detectionIsStub : false,
     }
     const replyId = nextId()
+    const survey = override?.survey ?? null
     setMessages((current) => [
       ...current,
       userMessage,
-      { id: replyId, role: 'assistant', content: '', streaming: true, meta: {} },
+      { id: replyId, role: 'assistant', content: '', streaming: true, meta: {}, survey },
     ])
     setDraft('')
     setBusy(true)
