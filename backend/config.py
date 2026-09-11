@@ -273,6 +273,12 @@ CLASS_CONFIDENCE_FLOOR: dict[str, float] = {
 # without a name. Downgrading keeps the contact and routes it to the
 # unidentified-object protocol, which is the correct handling for something the
 # detector saw and cannot confidently name.
+#
+# "Downgrade" names what happens to the CLAIM, not to the risk. An unidentified
+# object is treated as more serious than a confirmed one, so withholding a class
+# lowers the assessed risk only where that class outranked unidentified. A
+# withheld "human" gets quieter; a withheld "aircraft wreck" gets louder. Both
+# are the policy working, and the word misleads if read as de-escalation.
 DOWNGRADE_LABEL = "unknown"
 DOWNGRADE_NOTE = (
     "the {model} model called this '{cls}' at {confidence:.2f}, below the {floor:.2f} "

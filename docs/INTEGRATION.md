@@ -50,6 +50,12 @@ the record is synthetic; say so wherever you display it.
 confidence this system requires for that class, so the contact is reported as
 `unknown` with the original call preserved. Show it. Never re-promote it.
 
+Read "downgrade" as a change of claim, not a de-escalation. Withholding a class
+lowers the assessed risk only where that class outranks "unidentified". Below
+that, it raises it, because an object nobody has identified is treated as more
+serious than a confirmed wreck, and that is deliberate. Anyone adopting this
+pattern expecting quieter output will be surprised by the aircraft case.
+
 ### `POST /chat`
 
 ```json
