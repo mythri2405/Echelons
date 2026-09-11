@@ -18,12 +18,16 @@ the interface can render.
 from __future__ import annotations
 
 import re
+import logging
 from functools import lru_cache
 from typing import Any, Iterator
 
 import rag
 
 from . import config
+
+
+log = logging.getLogger("deepecho")
 
 
 class EngineError(RuntimeError):
@@ -33,6 +37,18 @@ class EngineError(RuntimeError):
     would take the worker down mid-request, so every call into it is funnelled
     through here.
     """
+
+
+def _transient(message: str) -> bool:
+    lowered = message.lower()
+    return any(marker in lowered for marker in config.TRANSIENT_PROVIDER_ERRORS)
+
+
+def provider_order(preferred: str) -> list[str]:
+    """The preferred provider, then the others, as failover candidates."""
+    if not config.PROVIDER_FAILOVER:
+        return [preferred]
+    return [preferred] + [p for p in sorted(rag.PROVIDERS) if p != preferred]
 
 
 def _guard(fn, *args, **kwargs):
@@ -500,9 +516,22 @@ def answer(message: str,
     if not work["hits"]:
         return _no_sources(work)
 
-    text = _guard(rag.generate, work["filled"], work["hits"],
-                  work["meta"]["provider"], work["meta"]["model"])
-    return _finalise(work, text)
+    # Try the preferred provider, then the other one if this one is simply
+    # unavailable. A refusal or a bad request is not retried anywhere.
+    last: EngineError | None = None
+    for provider in provider_order(work["meta"]["provider"]):
+        try:
+            text = _guard(rag.generate, work["filled"], work["hits"],
+                          provider, work["meta"]["model"] if provider == work["meta"]["provider"] else "")
+        except EngineError as exc:
+            last = exc
+            if not _transient(str(exc)):
+                raise
+            log.warning("provider %s unavailable, trying the next: %s", provider, exc)
+            continue
+        work["meta"]["provider"] = provider
+        return _finalise(work, text)
+    raise last if last else EngineError("No provider produced an answer.")
 
 
 def answer_stream(message: str,
@@ -540,10 +569,24 @@ def _emit(work: dict) -> Iterator[dict]:
 
     pieces: list[str] = []
     try:
-        for piece in rag.generate_stream(work["filled"], work["hits"],
-                                         work["meta"]["provider"], work["meta"]["model"]):
-            pieces.append(piece)
-            yield {"type": "delta", "text": piece}
+        for provider in provider_order(work["meta"]["provider"]):
+            try:
+                model = work["meta"]["model"] if provider == work["meta"]["provider"] else ""
+                for piece in rag.generate_stream(work["filled"], work["hits"], provider, model):
+                    pieces.append(piece)
+                    yield {"type": "delta", "text": piece}
+            except SystemExit as exc:
+                # Failover is only possible before the first word. Once text has
+                # gone out, switching provider mid-answer would splice two
+                # different completions together.
+                if pieces or not _transient(str(exc)):
+                    raise
+                log.warning("provider %s unavailable, trying the next: %s", provider, exc)
+                continue
+            work["meta"]["provider"] = provider
+            break
+        else:
+            raise SystemExit("No provider produced an answer.")
     except SystemExit as exc:
         # The response is already 200 by now, so a failure can only be reported
         # in the stream. Whatever text arrived before it is still grounded text

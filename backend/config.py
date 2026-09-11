@@ -52,6 +52,24 @@ CORS_ORIGINS = [
 PROVIDER = os.environ.get("DEEPECHO_PROVIDER", "gemini")
 MODEL = os.environ.get("DEEPECHO_MODEL", "")
 
+# Both providers are free tiers and both fail in normal use: Groq runs out of
+# tokens, Gemini returns 503 under load. They fail independently, so trying the
+# other one costs a second and roughly halves the chance of a dead answer in
+# front of an audience.
+#
+# Failover happens only for a provider-availability error, never for a refusal
+# or a bad request, and never once a streamed answer has begun. The response
+# always reports which provider actually answered, so this is transparent
+# rather than hidden.
+PROVIDER_FAILOVER = os.environ.get("DEEPECHO_FAILOVER", "1").lower() in {"1", "true", "yes"}
+
+# Substrings that mean "this provider is unavailable, try another", as opposed
+# to "this request was wrong", which no other provider would fix either.
+TRANSIENT_PROVIDER_ERRORS = (
+    "rate limit", "429", "503", "unavailable", "overload",
+    "still failing after retries", "timeout", "network error",
+)
+
 # --- Retrieval -------------------------------------------------------------
 # Mirrors the CLI defaults. Raise EF_SEARCH before anything else if recall ever
 # drops below 1.000 in `python3 rag.py bench`.
