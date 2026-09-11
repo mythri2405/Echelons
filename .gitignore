@@ -20,3 +20,4 @@ node_modules/
 # Scratch
 *.log
 frontend/tsconfig.tsbuildinfo
+eval/last-run.json

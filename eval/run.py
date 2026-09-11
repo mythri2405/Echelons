@@ -97,8 +97,12 @@ def main() -> int:
     parser.add_argument("--category", help="run only one category")
     parser.add_argument("--repeat", type=int, default=1,
                         help="run the suite N times; generation is not deterministic")
-    parser.add_argument("--workers", type=int, default=3,
-                        help="parallel requests; keep low on a free tier")
+    parser.add_argument("--workers", type=int, default=1,
+                        help="parallel requests; a free tier will not take more than 1")
+    parser.add_argument("--delay", type=float, default=2.0,
+                        help="seconds between requests, to stay inside a free tier's window")
+    parser.add_argument("--report", default=str(Path(__file__).resolve().parent / "last-run.json"),
+                        help="where the full result is written")
     parser.add_argument("--verbose", action="store_true", help="print failing answers")
     parser.add_argument("--json", dest="as_json", action="store_true")
     args = parser.parse_args()
@@ -109,8 +113,23 @@ def main() -> int:
         return 1
 
     runs = cases * args.repeat
-    with ThreadPoolExecutor(max_workers=args.workers) as pool:
-        outcomes = list(pool.map(lambda c: run_case(c, args.provider, args.url), runs))
+
+    def one(case: dict) -> dict:
+        outcome = run_case(case, args.provider, args.url)
+        if args.delay:
+            time.sleep(args.delay)
+        return outcome
+
+    if args.workers > 1:
+        with ThreadPoolExecutor(max_workers=args.workers) as pool:
+            outcomes = list(pool.map(one, runs))
+    else:
+        outcomes = [one(case) for case in runs]
+
+    # Always written, whole. A summary that reaches the terminal through `tail`
+    # loses exactly the detail you need, and a run that costs this much of a
+    # rate limit should not have to be repeated to find out what failed.
+    Path(args.report).write_text(json.dumps(outcomes, indent=2, default=str))
 
     if args.as_json:
         print(json.dumps(outcomes, indent=2, default=str))
@@ -137,7 +156,14 @@ def main() -> int:
             counts = by_category[category]
             print(f"{category:12} {counts['pass']:>4}/{counts['total']:<4}")
         print(f"{'-' * 12} {'-' * 8}")
+        errored = [o for o in outcomes if o["error"]]
+        print(f"{'-' * 12} {'-' * 8}")
         print(f"{'TOTAL':12} {len(passed):>4}/{len(outcomes):<4}")
+        if errored:
+            # A provider limit is not an assistant failure. Reported apart from
+            # the checks so a throttled run is never mistaken for a bad score.
+            print(f"{'not run':12} {len(errored):>4}      (provider errors, see below)")
+        print(f"\nfull report: {args.report}")
 
         if failed:
             print("\nFAILURES")
