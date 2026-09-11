@@ -420,6 +420,14 @@ def _prepare_turn(message: str, history: list[dict], detection: dict | None,
     """
     history = history or []
     record = {key: value for key, value in (detection or {}).items() if value is not None}
+    # The API speaks `object_class`, rag.py speaks `label`. schemas.py maps them
+    # on the way in, but the engine is also called directly by the evaluation
+    # suite and by anything else that skips the HTTP layer, and the two paths
+    # disagreeing on a field name is how a classified contact silently becomes
+    # an anomaly. Normalise here so the engine behaves the same either way.
+    if record.get("object_class") and not record.get("label"):
+        record["label"] = record.pop("object_class")
+    record.pop("object_class", None)
     provider = provider or config.PROVIDER
     model = model if model is not None else config.MODEL
 

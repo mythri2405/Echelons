@@ -354,6 +354,49 @@ differently from one.
 - **Placeholder detection.** While the detector is a stub, every record it
   produces is labelled synthetic wherever it appears.
 
+### Evaluation
+
+Forty cases in `eval/cases.jsonl`, run by `eval/run.py`, checked mechanically.
+
+```bash
+python3 eval/run.py                      # in-process, no server needed
+python3 eval/run.py --url http://127.0.0.1:8000
+python3 eval/run.py --category refusal --verbose
+python3 eval/run.py --repeat 3           # generation is not deterministic
+```
+
+Nothing in the suite asks a model to grade another model. A suite whose purpose
+is evidence cannot rest on the same machinery it is testing, so every check is a
+regex, a set membership, or a string lookup against the text that was actually
+retrieved. The exit code is 1 on any failure, so it can gate a commit.
+
+| Category | Cases | What it holds the assistant to |
+|---|---|---|
+| refusal | 8 | The corpus is silent, so the answer says so and gives only the fallback |
+| grounding | 7 | The corpus does cover it, and the answer cites it |
+| anomaly | 6 | Never an identity, never a similarity rendered as a percentage |
+| routing | 6 | The four intents resolve without the operator picking one |
+| coverage | 4 | A class with no governing document is flagged, not answered around |
+| authority | 5 | A body is named only where a source connects it to that hazard |
+| detector | 4 | Severity is looked up from the table, not read out of prose |
+
+Two checks run on every case whether it asks for them or not.
+
+**Citations resolve.** Every `[Sn]` in the answer must point at a source that was
+really retrieved. A marker past the end of the list means the model numbered
+something it was never given.
+
+**No invented numbers.** Every quantity carrying a unit is extracted from the
+answer and must appear in the retrieved text. A standoff distance, a depth or a
+delay that no source stated is the exact failure this system exists to prevent,
+and it is detectable without judgement. Citation markers and ordered-list
+numbering are stripped first, or `[S3]` and `3.` become quantities.
+
+The suite earned its place on its first run by finding a real bug: the engine
+read `label` while the API spoke `object_class`, and the mapping lived only in
+the HTTP layer. Anything calling the engine directly had its classified contacts
+silently treated as anomalies. `_prepare_turn` now normalises the field itself.
+
 ### The detector
 
 Two YOLOv8 checkpoints, both run over every tile.
