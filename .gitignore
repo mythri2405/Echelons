@@ -1,12 +1,12 @@
-index.json
-vectors.npy
-index.faiss
+/index.json
+/vectors.npy
+/index.faiss
 __pycache__/
 .venv/
 
-catalog_index.json
-catalog_vectors.npy
-catalog.faiss
+/catalog_index.json
+/catalog_vectors.npy
+/catalog.faiss
 
 .env
 # The publications in sources/ ARE committed. Every citation the assistant
