@@ -444,6 +444,15 @@ def _prepare_turn(message: str, history: list[dict], detection: dict | None,
     if record.get("object_class") and not record.get("label"):
         record["label"] = record.pop("object_class")
     record.pop("object_class", None)
+    # And a raw detector class becomes the corpus's word for it. /detect already
+    # maps these, but the survey handoff sends the checkpoint's own class name
+    # and so does anything calling /chat directly. Without this, "ship" matches
+    # no synonym, no severity and no coverage entry, and the answer comes back
+    # saying the sources contain no information on ships while the wreck
+    # document sits unretrieved.
+    mapped = config.DETECTOR_CLASS_MAP.get(_normalise(record.get("label", "")))
+    if mapped:
+        record["label"] = mapped
     provider = provider or config.PROVIDER
     model = model if model is not None else config.MODEL
 
